@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import ReactFlow, {
    Background, 
    MiniMap, 
@@ -9,6 +9,7 @@ import ReactFlow, {
   } from 'react-flow-renderer';
 import localforage from 'localforage';
 import initialElements from './initialElements'
+import "../styles/overlay.css";
 
 localforage.config({
   name: 'react-flow-docs',
@@ -27,6 +28,14 @@ const TestButton = () => {
     setElements((els) => removeElements(elementsToRemove, els));
   const onConnect = (params) => setElements((els) => addEdge(params, els));
 
+  const [showModal, setShowModal] = useState(false);
+  const [modalX, setModalX] = useState("calc(50vw - 100px)");
+  const [modalY, setModalY] = useState("calc(50vh - 150px)");
+
+  const [selectedNode, setSelectedNode] = useState({
+    name: "Selecionado", discount: 10, since: "16/07"
+  })
+
   const onSave = useCallback(() => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
@@ -44,68 +53,95 @@ const TestButton = () => {
         for (const element of flow.elements) {
           setElements((els) => els.concat(element))
         }
-        // setElements(flow.elements || []);
       }
     };
 
     restoreFlow();
   }, [setElements]);
 
-  const onAdd = useCallback(() => {
+  useEffect(() => { onRestore() }, [onRestore])
+ 
+  const onAdd = useCallback(async () => {
+    const node = await localforage.getItem("lastNode");
+    const countX = (node) ? node.position.x : 0;
+    const countY = (node) ? node.position.y : 0;
+    const uniqueId = getNodeId();
+
     const newNode = {
-      id: getNodeId(),
-      data: { label: 'Added node' },
+      id: uniqueId,
+      data: { label: `Node ${uniqueId}` },
       position: {
-        x: Math.random() * window.innerWidth - 100,
-        y: Math.random() * window.innerHeight,
+        x: countX,
+        y: countY + 100,
       },
     };
 
+    localforage.setItem("lastNode", newNode);
     setElements((els) => els.concat(newNode));
   }, [setElements]);
 
+  function selectNode(evt, node) {
+    let selected = selectedNode;
+    selected.name = node.data.label;
+    setSelectedNode(selected);
 
-return (
-    <ReactFlowProvider>
-      <div className="flow" style={{ height: 900 }}>
-        <ReactFlow
-          elements={elements}
-          onElementsRemove={onElementsRemove}
-          onConnect={onConnect}
-          onLoad={setRfInstance}
-        >
-          <Background
-            variant="lines"
-            gap={12}
-            size={1}
-          />
+    setModalX(`calc(${evt.clientX}px - 100px)`);
+    setModalY(`calc(${evt.clientY}px + 25px)`);
+    
+    setShowModal(true);
+  }
 
-          <MiniMap
-            nodeColor={(node) => {
-              switch (node.type) {
-                case 'input':
-                  return 'red';
-                case 'default':
-                  return '#00ff00';
-                case 'output':
-                  return 'rgb(0,0,255)';
-                default:
-                  return '#eee';
-              }
-            }}
-            nodeStrokeWidth={3}
-          />
-          <Controls />
-        </ReactFlow>
-      </div>
-      <div className="save__controls">
-          <button onClick={onSave}>save</button>
-          <button onClick={onRestore}>restore</button>
-          <button onClick={onAdd}>add node</button>
-      </div>
-    </ReactFlowProvider>
-);
+  return (
+      <ReactFlowProvider>
+        <div className="flow" style={{ height: 900 }}>
+          <ReactFlow
+            elements={elements}
+            onElementsRemove={onElementsRemove}
+            onConnect={onConnect}
+            onLoad={setRfInstance}
+            onElementClick = {selectNode}
+            onNodeDragStop = {(evt, node) => localforage.setItem("lastNode", node)}
+          >
+            <Background
+              variant="lines"
+              gap={12}
+              size={1}
+            />
 
+            <MiniMap
+              nodeColor={(node) => {
+                switch (node.type) {
+                  case 'input':
+                    return 'red';
+                  case 'default':
+                    return '#00ff00';
+                  case 'output':
+                    return 'rgb(0,0,255)';
+                  default:
+                    return '#eee';
+                }
+              }}
+              nodeStrokeWidth={3}
+            />
+            <Controls />
+          </ReactFlow>
+        </div>
+        <div className="save__controls">
+            <button onClick={onSave}>save</button>
+            <button onClick={onRestore}>restore</button>
+            <button onClick={onAdd}>add node</button>
+        </div>
+        <div className = "overlay" style = {{ 
+            display: (showModal) ? "flex" : "none",
+            top: modalY, left: modalX
+          }}>
+          <button onClick = {() => setShowModal(false)}> X </button>
+          <h3> { selectedNode.name } </h3>
+          <p> Com {selectedNode.discount}% de desconto </p>
+          <p> Cadastrado no dia {selectedNode.since} </p>
+        </div>
+      </ReactFlowProvider>
+  );
 };
 
 export default TestButton; 
