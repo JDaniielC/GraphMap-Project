@@ -1,0 +1,26 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font: 400 1.8rem/1 'Nunito', sans-serif;
+    padding: 1rem 2rem;
+    background: rgb(93, 207, 252);
+}
+
+img {
+    width: 50px;
+    height: 50px;
+}
+
+.flow {
+    height: 90vh; 
+    margin: 15px 75px 5px 50px;
+    width: min(70%, 112rem);
+    background: white;
+}

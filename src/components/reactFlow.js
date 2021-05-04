@@ -10,6 +10,8 @@ import ReactFlow, {
 import localforage from 'localforage';
 import initialElements from './initialElements'
 import "../styles/overlay.css";
+import '../styles/flow.css';
+import logo from '../styles/logo.png'
 
 localforage.config({
   name: 'react-flow-docs',
@@ -92,55 +94,60 @@ const TestButton = () => {
   }
 
   return (
-      <ReactFlowProvider>
-        <div className="flow" style={{ height: 900 }}>
-          <ReactFlow
-            elements={elements}
-            onElementsRemove={onElementsRemove}
-            onConnect={onConnect}
-            onLoad={setRfInstance}
-            onElementClick = {selectNode}
-            onNodeDragStop = {(evt, node) => localforage.setItem("lastNode", node)}
-          >
-            <Background
-              variant="lines"
-              gap={12}
-              size={1}
-            />
+  <ReactFlowProvider>
+    <div className="header">
+      <img src={logo} alt="logo"/>
 
-            <MiniMap
-              nodeColor={(node) => {
-                switch (node.type) {
-                  case 'input':
-                    return 'red';
-                  case 'default':
-                    return '#00ff00';
-                  case 'output':
-                    return 'rgb(0,0,255)';
-                  default:
-                    return '#eee';
-                }
-              }}
-              nodeStrokeWidth={3}
-            />
-            <Controls />
-          </ReactFlow>
-        </div>
-        <div className="save__controls">
-            <button onClick={onSave}>save</button>
-            <button onClick={onRestore}>restore</button>
-            <button onClick={onAdd}>add node</button>
-        </div>
-        <div className = "overlay" style = {{ 
-            display: (showModal) ? "flex" : "none",
-            top: modalY, left: modalX
-          }}>
-          <button onClick = {() => setShowModal(false)}> X </button>
-          <h3> { selectedNode.name } </h3>
-          <p> Com {selectedNode.discount}% de desconto </p>
-          <p> Cadastrado no dia {selectedNode.since} </p>
-        </div>
-      </ReactFlowProvider>
+      Nilson multinível
+    </div>
+    <div className="flow">
+      <ReactFlow
+        elements={elements}
+        onElementsRemove={onElementsRemove}
+        onConnect={onConnect}
+        onLoad={setRfInstance}
+        onElementClick = {selectNode}
+        onNodeDragStop = {(evt, node) => localforage.setItem("lastNode", node)}
+      >
+        <Background
+          variant="lines"
+          gap={12}
+          size={1}
+        />
+
+        <MiniMap
+          nodeColor={(node) => {
+            switch (node.type) {
+              case 'input':
+                return 'red';
+              case 'default':
+                return '#00ff00';
+              case 'output':
+                return 'rgb(0,0,255)';
+              default:
+                return '#eee';
+            }
+          }}
+          nodeStrokeWidth={3}
+        />
+        <Controls />
+      </ReactFlow>
+    </div>
+    <div className="save__controls">
+        <button onClick={onSave}>save</button>
+        <button onClick={onRestore}>restore</button>
+        <button onClick={onAdd}>add node</button>
+    </div>
+    <div className = "overlay" style = {{ 
+        display: (showModal) ? "flex" : "none",
+        top: modalY, left: modalX
+      }}>
+      <button onClick = {() => setShowModal(false)}> X </button>
+      <h3> { selectedNode.name } </h3>
+      <p> Com {selectedNode.discount}% de desconto </p>
+      <p> Cadastrado no dia {selectedNode.since} </p>
+    </div>
+  </ReactFlowProvider>
   );
 };
 
