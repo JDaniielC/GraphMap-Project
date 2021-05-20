@@ -20,8 +20,6 @@ localforage.config({
   storeName: 'flows',
 });
 
-const flowKey = 'example-flow';
-
 const getNodeId = () => `randomnode_${+new Date()}`;
 
 const TestButton = () => {
@@ -39,41 +37,20 @@ const TestButton = () => {
   const [modalX, setModalX] = useState("calc(50vw - 100px)");
   const [modalY, setModalY] = useState("calc(50vh - 150px)");
 
-  const [selectedNode, setSelectedNode] = useState({
-    name: "Selecionado", discount: 10, 
-    since: "16/07"
-  })
-
-  const bla = useCallback(() => {
-    const testNode = {
-      id: "fmfo123",
-      data: {
-        label: "SAPAS"
-      },
-      position: {x: 500, y: 300},
-      type: "default",
-      source: "null",
-      sourceHandle: "null",
-      target: "null",
-      targetHandle: "null",
-    }
-    setElements((els) => els.concat(testNode));
-  }, []);
+  const [selectedNode, setSelectedNode] = useState({})
 
   const onSave = useCallback(async () => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
-
-      localforage.setItem(flowKey, JSON.stringify(flow));
-      
-      const requestFlow = await api.post('/flow/', {rfInstance});
+      console.log(flow)
+      await api.post('/flow/', { elements: flow.elements });
     }
   }, [rfInstance]);
 
   const onRestore = useCallback(() => {
     const restoreFlow = async () => {
-      const flow = JSON.parse(await localforage.getItem(flowKey));
-
+      const { data: flow } = await api.get('/flow/');
+      console.log(flow)
       if (flow) {
         setElements([]);
         for (const element of flow.elements) {
@@ -85,7 +62,14 @@ const TestButton = () => {
     restoreFlow();
   }, [setElements]);
 
-  useEffect(() => { onRestore() }, [onRestore])
+  useEffect(() => { 
+    async function loadNodes() {
+      const response = await api.get('/student/');
+      setSelectedNode(response.data);
+    }
+    loadNodes();
+    onRestore();
+  }, [onRestore]);
  
   const handleRegister = useCallback(async () => {
     const requestData = await api.post(
@@ -133,9 +117,12 @@ const TestButton = () => {
 
     let selected = selectedNode;
     selected.name = node.data.label;
+    selected.value = node.data.payment;
     selected.discount = node.data.discount;
     selected.since = formatDate(node.data.since);
     setSelectedNode(selected);
+
+    console.log(selected)
 
     setModalX(`calc(${evt.clientX}px - 100px)`);
     setModalY(`calc(${evt.clientY}px + 25px)`);
@@ -147,7 +134,7 @@ const TestButton = () => {
   <ReactFlowProvider>
     <div className="header">
       <img src={logo} alt="logo"/>
-      Nilson multinível
+      Projeto
     </div>
     <div className="content">
     <div className="animate-appear flow">
@@ -216,8 +203,6 @@ const TestButton = () => {
         <button onClick={onSave}>Salvar mapa</button>
 
         <button onClick={onRestore}>Restaurar</button>
-
-        <button onClick={bla}>Teste</button>
       </div>
     </div>
     <div className = "overlay" style = {{ 
@@ -226,8 +211,9 @@ const TestButton = () => {
       }}>
       <button onClick = {() => setShowModal(false)}> X </button>
       <h3> { selectedNode.name } </h3>
+      <p> Valor da mensalidade é {selectedNode.value} </p>
       <p> Com {selectedNode.discount}% de desconto </p>
-      <p> Cadastrado no dia {selectedNode.since} </p>
+      <p>Criado em {selectedNode.since} </p>
     </div>
   </ReactFlowProvider>
   );
