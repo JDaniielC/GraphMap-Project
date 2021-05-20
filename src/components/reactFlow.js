@@ -11,7 +11,9 @@ import localforage from 'localforage';
 import initialElements from './initialElements'
 import "../styles/overlay.css";
 import '../styles/flow.css';
+import '../styles/animations.css'
 import logo from '../styles/logo.png'
+import api from '../services/api';
 
 localforage.config({
   name: 'react-flow-docs',
@@ -23,6 +25,9 @@ const flowKey = 'example-flow';
 const getNodeId = () => `randomnode_${+new Date()}`;
 
 const TestButton = () => {
+  const [name, setName] = useState('');
+  const [value, setValue] = useState('');
+  const [bonus, setBonus] = useState('');
 
   const [rfInstance, setRfInstance] = useState(null);
   const [elements, setElements] = useState(initialElements);
@@ -35,14 +40,33 @@ const TestButton = () => {
   const [modalY, setModalY] = useState("calc(50vh - 150px)");
 
   const [selectedNode, setSelectedNode] = useState({
-    name: "Selecionado", discount: 10, since: "16/07"
+    name: "Selecionado", discount: 10, 
+    since: "16/07"
   })
 
-  const onSave = useCallback(() => {
+  const bla = useCallback(() => {
+    const testNode = {
+      id: "fmfo123",
+      data: {
+        label: "SAPAS"
+      },
+      position: {x: 500, y: 300},
+      type: "default",
+      source: "null",
+      sourceHandle: "null",
+      target: "null",
+      targetHandle: "null",
+    }
+    setElements((els) => els.concat(testNode));
+  }, []);
+
+  const onSave = useCallback(async () => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
 
       localforage.setItem(flowKey, JSON.stringify(flow));
+      
+      const requestFlow = await api.post('/flow/', {rfInstance});
     }
   }, [rfInstance]);
 
@@ -63,7 +87,16 @@ const TestButton = () => {
 
   useEffect(() => { onRestore() }, [onRestore])
  
-  const onAdd = useCallback(async () => {
+  const handleRegister = useCallback(async () => {
+    const requestData = await api.post(
+      '/student/', { name, value });
+    setName(''); setValue('');
+
+    const { 
+      name: studentName, 
+      value: studentPay,
+      discount, createdAt
+    } = requestData.data;
     const node = await localforage.getItem("lastNode");
     const countX = (node) ? node.position.x : 0;
     const countY = (node) ? node.position.y : 0;
@@ -71,7 +104,12 @@ const TestButton = () => {
 
     const newNode = {
       id: uniqueId,
-      data: { label: `Node ${uniqueId}` },
+      data: { 
+        label: studentName,
+        payment: studentPay,
+        since: new Date(Date.parse(createdAt)),
+        discount, 
+      },
       position: {
         x: countX,
         y: countY + 100,
@@ -80,11 +118,23 @@ const TestButton = () => {
 
     localforage.setItem("lastNode", newNode);
     setElements((els) => els.concat(newNode));
-  }, [setElements]);
+  }, [setElements, name, value]);
 
   function selectNode(evt, node) {
+    function formatDate(data){
+      var
+        dia  = data.getDate().toString(),
+        diaF = (dia.length === 1)?'0'+ dia : dia,
+        mes  = (data.getMonth()+1).toString(),
+        mesF = (mes.length === 1)?'0'+ mes : mes,
+        anoF = data.getFullYear();
+      return diaF + "/" + mesF + "/" + anoF;
+    }
+
     let selected = selectedNode;
     selected.name = node.data.label;
+    selected.discount = node.data.discount;
+    selected.since = formatDate(node.data.since);
     setSelectedNode(selected);
 
     setModalX(`calc(${evt.clientX}px - 100px)`);
@@ -97,46 +147,78 @@ const TestButton = () => {
   <ReactFlowProvider>
     <div className="header">
       <img src={logo} alt="logo"/>
-
       Nilson multinível
     </div>
-    <div className="flow">
-      <ReactFlow
-        elements={elements}
-        onElementsRemove={onElementsRemove}
-        onConnect={onConnect}
-        onLoad={setRfInstance}
-        onElementClick = {selectNode}
-        onNodeDragStop = {(evt, node) => localforage.setItem("lastNode", node)}
-      >
-        <Background
-          variant="lines"
-          gap={12}
-          size={1}
-        />
+    <div className="content">
+    <div className="animate-appear flow">
+        <ReactFlow
+          elements={elements}
+          onElementsRemove={onElementsRemove}
+          onConnect={onConnect}
+          onLoad={setRfInstance}
+          onElementClick = {selectNode}
+          onNodeDragStop = {(evt, node) => localforage.setItem("lastNode", node)}
+        >
+          <Background
+            variant="lines"
+            gap={12}
+            size={1}
+          />
 
-        <MiniMap
-          nodeColor={(node) => {
-            switch (node.type) {
-              case 'input':
-                return 'red';
-              case 'default':
-                return '#00ff00';
-              case 'output':
-                return 'rgb(0,0,255)';
-              default:
-                return '#eee';
-            }
-          }}
-          nodeStrokeWidth={3}
-        />
-        <Controls />
-      </ReactFlow>
-    </div>
-    <div className="save__controls">
-        <button onClick={onSave}>save</button>
-        <button onClick={onRestore}>restore</button>
-        <button onClick={onAdd}>add node</button>
+          <MiniMap
+            nodeColor={(node) => {
+              switch (node.type) {
+                case 'input':
+                  return 'red';
+                case 'default':
+                  return '#00ff00';
+                case 'output':
+                  return 'rgb(0,0,255)';
+                default:
+                  return '#eee';
+              }
+            }}
+            nodeStrokeWidth={3}
+          />
+          <Controls />
+        </ReactFlow>
+      </div>
+
+      <div className="animate-left form">
+        <h1>
+          Cadastro
+        </h1>
+        <div className="input-block">
+          <label htmlFor="name">Nome do aluno</label>
+          <input name="name" id="name" required
+            onChange={e => {
+              setName(e.target.value)}}
+          />
+        </div>
+
+        <div className="input-block">
+          <label htmlFor="value">Mensalidade</label>
+          <input type="number" name= "value"
+            id= "value" required
+            onChange={e => setValue(e.target.value)}
+          />
+        </div>
+
+        <div className="input-block">
+          <label htmlFor="bonus">Indicado por</label>
+          <input name= "bonus" id="bonus" 
+            onChange={e => setBonus(e.target.value)}
+          />
+        </div>
+
+        <button onClick={handleRegister}> Cadastrar </button>
+
+        <button onClick={onSave}>Salvar mapa</button>
+
+        <button onClick={onRestore}>Restaurar</button>
+
+        <button onClick={bla}>Teste</button>
+      </div>
     </div>
     <div className = "overlay" style = {{ 
         display: (showModal) ? "flex" : "none",
