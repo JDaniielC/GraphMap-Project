@@ -115,9 +115,19 @@ const TestButton = () => {
       return diaF + "/" + mesF + "/" + anoF;
     }
 
+    function discount(value, percent) {
+    
+      let mult, div, result;
+      mult = value * percent;
+      div = mult / 100;
+      result = value - div;
+  
+      return result;
+    }
+
     let selected = selectedNode;
     selected.name = node.data.label;
-    selected.value = node.data.payment;
+    selected.value = discount(node.data.payment, node.data.discount);
     selected.discount = node.data.discount;
     selected.since = formatDate(node.data.since);
     setSelectedNode(selected);
