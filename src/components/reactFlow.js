@@ -31,18 +31,36 @@ const TestButton = () => {
   const [elements, setElements] = useState(initialElements);
   const onElementsRemove = (elementsToRemove) =>
     setElements((els) => removeElements(elementsToRemove, els));
-  const onConnect = (params) => setElements((els) => addEdge(params, els));
+  const onConnect = (params) => {
+    const fatherId = params.source;
+    console.log(fatherId)
+    setElements((els) => addEdge(params, els));
+    addDiscount(fatherId);
+  };
 
   const [showModal, setShowModal] = useState(false);
   const [modalX, setModalX] = useState("calc(50vw - 100px)");
   const [modalY, setModalY] = useState("calc(50vh - 150px)");
 
-  const [selectedNode, setSelectedNode] = useState({})
+  const [selectedNode, setSelectedNode] = useState({});
+
+  async function addDiscount(fatherId) {
+    setElements((els) => els.map((el) => {
+      if (el.id === fatherId) {
+        const oldDiscount = el.data.discount;
+        console.log(el.id, oldDiscount);
+        el.data = {
+          ...el.data,
+          discount: oldDiscount + 5
+        }
+      }
+      return el;
+    }))
+  }
 
   const onSave = useCallback(async () => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
-      console.log(flow)
       await api.post('/flow/', { elements: flow.elements });
     }
   }, [rfInstance]);
@@ -50,7 +68,6 @@ const TestButton = () => {
   const onRestore = useCallback(() => {
     const restoreFlow = async () => {
       const { data: flow } = await api.get('/flow/');
-      console.log(flow)
       if (flow) {
         setElements([]);
         for (const element of flow.elements) {
@@ -63,24 +80,20 @@ const TestButton = () => {
   }, [setElements]);
 
   useEffect(() => { 
-    async function loadNodes() {
-      const response = await api.get('/student/');
-      setSelectedNode(response.data);
-    }
-    loadNodes();
-    onRestore();
-  }, [onRestore]);
+    const restoreFlow = async () => {
+      const { data: flow } = await api.get('/flow/');
+      if (flow) {
+        setElements([]);
+        for (const element of flow.elements) {
+          setElements((els) => els.concat(element))
+        }
+      }
+    };
+
+    restoreFlow();
+  }, []);
  
   const handleRegister = useCallback(async () => {
-    const requestData = await api.post(
-      '/student/', { name, value });
-    setName(''); setValue('');
-
-    const { 
-      name: studentName, 
-      value: studentPay,
-      discount, createdAt
-    } = requestData.data;
     const node = await localforage.getItem("lastNode");
     const countX = (node) ? node.position.x : 0;
     const countY = (node) ? node.position.y : 0;
@@ -89,10 +102,10 @@ const TestButton = () => {
     const newNode = {
       id: uniqueId,
       data: { 
-        label: studentName,
-        payment: studentPay,
-        since: new Date(Date.parse(createdAt)),
-        discount, 
+        label: name,
+        payment: value,
+        since: new Date(),
+        discount: 0, 
       },
       position: {
         x: countX,
@@ -100,12 +113,14 @@ const TestButton = () => {
       },
     };
 
+    setName(''); setValue('');
     localforage.setItem("lastNode", newNode);
     setElements((els) => els.concat(newNode));
   }, [setElements, name, value]);
 
   function selectNode(evt, node) {
     function formatDate(data){
+      data = new Date(Date.parse(data));
       var
         dia  = data.getDate().toString(),
         diaF = (dia.length === 1)?'0'+ dia : dia,
@@ -116,7 +131,7 @@ const TestButton = () => {
     }
 
     function discount(value, percent) {
-    
+      
       let mult, div, result;
       mult = value * percent;
       div = mult / 100;
@@ -132,8 +147,6 @@ const TestButton = () => {
     selected.since = formatDate(node.data.since);
     setSelectedNode(selected);
 
-    console.log(selected)
-
     setModalX(`calc(${evt.clientX}px - 100px)`);
     setModalY(`calc(${evt.clientY}px + 25px)`);
     
@@ -144,7 +157,7 @@ const TestButton = () => {
   <ReactFlowProvider>
     <div className="header">
       <img src={logo} alt="logo"/>
-      Projeto
+      
     </div>
     <div className="content">
     <div className="animate-appear flow">
