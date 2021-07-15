@@ -93,7 +93,8 @@ const TestButton = () => {
     restoreFlow();
   }, []);
  
-  const handleRegister = useCallback(async () => {
+  const handleRegister = useCallback(async (e) => {
+    e.preventDefault();
     const node = await localforage.getItem("lastNode");
     const countX = (node) ? node.position.x : 0;
     const countY = (node) ? node.position.y : 0;
@@ -200,7 +201,7 @@ const TestButton = () => {
         </h1>
         <div className="input-block">
           <label htmlFor="name">Nome do aluno</label>
-          <input name="name" id="name" required
+          <input name="name" id="name" value={name} required
             onChange={e => {
               setName(e.target.value)}}
           />
@@ -208,7 +209,7 @@ const TestButton = () => {
 
         <div className="input-block">
           <label htmlFor="value">Mensalidade</label>
-          <input type="number" name= "value"
+          <input type="number" name= "value" value={value}
             id= "value" required
             onChange={e => setValue(e.target.value)}
           />
