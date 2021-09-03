@@ -1,11 +1,11 @@
 const axios = require('axios');
-const Dev = require('../model/dev');
+const Flow = require('../model/flow');
 
 module.exports = {
     async index(request, response) {
         const { user } = request.headers;
-        const loggedUser = await Dev.findById(user);
-        const users = await Dev.find ({
+        const loggedUser = await Flow.findById(user);
+        const users = await Flow.find ({
             $and: [
                 { _id: { $ne: user}},
                 { _id: { $nin: loggedUser.likes}},
@@ -19,7 +19,7 @@ module.exports = {
     async store(request, response) {
         const {username} = request.body;
 
-        const userExists = await Dev.findOne({ user: username });
+        const userExists = await Flow.findOne({ user: username });
 
         if (userExists) {
             return response.json(userExists);
@@ -29,13 +29,13 @@ module.exports = {
 
         const {name, bio, avatar_url:avatar} = dataResponse.data;
 
-        const dev = await Dev.create({
+        const flow = await Flow.create({
             name,
             user: username,
             bio,
             avatar
         })
 
-        return response.json(dev);
+        return response.json(Flow);
     }
 }

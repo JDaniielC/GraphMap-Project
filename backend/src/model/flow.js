@@ -1,6 +1,6 @@
 const {Schema, model} = require('mongoose');
 
-const DevSchema = new Schema({
+const FlowSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -26,4 +26,4 @@ const DevSchema = new Schema({
     timestamps: true,
 });
 
-module.exports = model('dev', DevSchema);
+module.exports = model('flow', FlowSchema);
