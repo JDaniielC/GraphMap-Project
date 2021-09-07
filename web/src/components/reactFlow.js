@@ -68,9 +68,10 @@ const TestButton = () => {
   const onRestore = useCallback(() => {
     const restoreFlow = async () => {
       const { data: flow } = await api.get('/flow/');
+
       if (flow) {
         setElements([]);
-        for (const element of flow.elements) {
+        for (const element of flow) {
           setElements((els) => els.concat(element))
         }
       }
@@ -84,7 +85,7 @@ const TestButton = () => {
       const { data: flow } = await api.get('/flow/');
       if (flow) {
         setElements([]);
-        for (const element of flow.elements) {
+        for (const element of flow) {
           setElements((els) => els.concat(element))
         }
       }

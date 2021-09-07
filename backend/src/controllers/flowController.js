@@ -2,19 +2,17 @@ const Flow = require('../model/flow');
 
 module.exports = {
     async index(request, response) {
-        const { data } = request.headers;
-        const users = await Flow.find ({
-        })
+        const flow = await Flow.find({});
 
-        return response.json(users);
+        return response.json(flow);
     },
 
     async store(request, response) {
-        const {data} = request.body;
-
-        const flow = await Flow.create({
-            data
-        })
+        const {elements} = request.body;
+        await Flow.deleteMany();
+        const flow = await Flow.insertMany(
+            elements
+        )
 
         return response.json(flow);
     }
