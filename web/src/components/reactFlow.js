@@ -12,7 +12,6 @@ import initialElements from './initialElements'
 import "../styles/overlay.css";
 import '../styles/flow.css';
 import '../styles/animations.css'
-import logo from '../styles/logo.png'
 import api from '../services/api';
 
 localforage.config({
@@ -22,7 +21,7 @@ localforage.config({
 
 const getNodeId = () => `randomnode_${+new Date()}`;
 
-const TestButton = () => {
+const FlowPage = () => {
   const [name, setName] = useState('');
   const [value, setValue] = useState('');
   const [bonus, setBonus] = useState('');
@@ -157,10 +156,6 @@ const TestButton = () => {
 
   return (
   <ReactFlowProvider>
-    <div className="header">
-      <img src={logo} alt="logo"/>
-      
-    </div>
     <div className="content">
     <div className="animate-appear flow">
         <ReactFlow
@@ -244,4 +239,4 @@ const TestButton = () => {
   );
 };
 
-export default TestButton; 
+export default FlowPage; 
