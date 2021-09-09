@@ -11,7 +11,9 @@ const FlowSchema = new Schema({
     position: {
         x: Number,
         y: Number
-    }
+    },
+    source: String,
+    target: String,
 }, {
     timestamps: true,
 });

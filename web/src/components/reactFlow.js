@@ -24,30 +24,28 @@ const getNodeId = () => `randomnode_${+new Date()}`;
 const FlowPage = () => {
   const [name, setName] = useState('');
   const [value, setValue] = useState('');
-  const [bonus, setBonus] = useState('');
-
+  const [showModal, setShowModal] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
+  const [selectedNode, setSelectedNode] = useState({});
+  const [modalX, setModalX] = useState("calc(50vw - 100px)");
+  const [modalY, setModalY] = useState("calc(50vh - 150px)");
   const [elements, setElements] = useState(initialElements);
+
   const onElementsRemove = (elementsToRemove) =>
     setElements((els) => removeElements(elementsToRemove, els));
-  const onConnect = (params) => {
+  
+    const onConnect = (params) => {
     const fatherId = params.source;
     console.log(fatherId)
     setElements((els) => addEdge(params, els));
     addDiscount(fatherId);
   };
 
-  const [showModal, setShowModal] = useState(false);
-  const [modalX, setModalX] = useState("calc(50vw - 100px)");
-  const [modalY, setModalY] = useState("calc(50vh - 150px)");
-
-  const [selectedNode, setSelectedNode] = useState({});
-
   async function addDiscount(fatherId) {
     setElements((els) => els.map((el) => {
       if (el.id === fatherId) {
         const oldDiscount = el.data.discount;
-        console.log(el.id, oldDiscount);
+        console.log(rfInstance.toObject())
         el.data = {
           ...el.data,
           discount: oldDiscount + 5
@@ -198,8 +196,7 @@ const FlowPage = () => {
         <div className="input-block">
           <label htmlFor="name">Nome do aluno</label>
           <input name="name" id="name" value={name} required
-            onChange={e => {
-              setName(e.target.value)}}
+            onChange={e => {setName(e.target.value)}}
           />
         </div>
 
@@ -208,13 +205,6 @@ const FlowPage = () => {
           <input type="number" name= "value" value={value}
             id= "value" required
             onChange={e => setValue(e.target.value)}
-          />
-        </div>
-
-        <div className="input-block">
-          <label htmlFor="bonus">Indicado por</label>
-          <input name= "bonus" id="bonus" 
-            onChange={e => setBonus(e.target.value)}
           />
         </div>
 
