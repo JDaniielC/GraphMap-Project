@@ -4,7 +4,6 @@ import Page from './statisticPage'
 import FlowPage from './reactFlow';
 
 import logo from '../styles/logo.png'
-import '../styles/flow.css'
 import '../styles/loginPage.css'
 
 const Main = () => {
@@ -17,8 +16,8 @@ const Main = () => {
 
     function handleRegister (e) {
         e.preventDefault();
-        if (user == 'admin') {
-            if (password == 'admin') {
+        if (user === 'admin') {
+            if (password === 'admin') {
                 setEnter(true);
             }
             else {
@@ -63,7 +62,7 @@ const Main = () => {
             : <div>
                 <header className="header">
                     <img src={logo} alt="logo"/>
-                    <button onClick={Clicou}>Clique aqui</button>
+                    <button onClick={Clicou}>Completar Cadastro</button>
                 </header>
                 <div>
                     {click 
