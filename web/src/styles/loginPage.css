@@ -49,14 +49,19 @@
     color: #999;
 }
 
-.login-container button {
+button.confirm-button {
     margin-top: 25px;
+    padding: 17px 35px;
     border: 0;
-    border-radius: 4px;
-    padding: 17px 60px;
-    font-size: 30px;
-    background: #DF4723;
-    font-weight: bold;
-    color: #FFF;
     cursor: pointer;
-}
+    border-radius: 4px;
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 17px;
+    transition: background-color 0.2s;
+  }
+  
+button.confirm-button:hover {
+    background-color: #6c79f5;
+  }
+  

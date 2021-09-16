@@ -62,7 +62,7 @@ const Main = () => {
             : <div>
                 <header className="header">
                     <img src={logo} alt="logo"/>
-                    <button onClick={Clicou}>Completar Cadastro</button>
+                    <button  className='confirm-button' onClick={Clicou}>Completar Cadastro</button>
                 </header>
                 <div>
                     {click 
