@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import '../styles/page.css'
 
 function Page() {
   const [name, setName] = useState('');
@@ -17,8 +18,8 @@ function Page() {
   }
 
   return (
-    <div className="page-map">
-      <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "100vh" }}>
+    <div id='page-map'>
+      <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "100%", width: '100%' }}>
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiYXJnZW50ZSIsImEiOiJja3RrcWZyMXExb3ZiMnZxbnJvODltYXU2In0.nHPgAT-Jyn7Rb5-5E4_x8Q"
@@ -92,9 +93,9 @@ function Page() {
                 />
                 </div>
             </fieldset>
-
             <button onClick={handleRegister}> Atualizar Cadastro </button>
         </div>
+
     </div>
   );
 };

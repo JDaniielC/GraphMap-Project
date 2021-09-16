@@ -35,44 +35,44 @@ const Main = () => {
     }
 
     return(
-        <div>
-            {!enter 
-            ? <div className="main">
-                <div className="login-container">
-                    <h1>Graph Project</h1>
+        <>
+        {!enter 
+        ? <div className="main">
+            <div className="login-container">
+                <h1>Graph Project</h1>
 
-                    <div className="input-block">
-                        <label htmlFor="user">Usuário</label>
-                        <input value={user} required placeholder={wrongUser}
-                            onChange={e => {setUser(e.target.value)}}
-                        />
-                    </div>
-
-                    <div className="input-block">
-                        <label htmlFor="password">Senha</label>
-                        <input value={password} required placeholder={wrongPass}
-                            onChange={e => setPassword(e.target.value)}
-                        />
-                    </div>
-
-                    <button onClick={handleRegister}>Entrar</button>
-                </div> 
-            </div> 
-
-            : <div>
-                <header className="header">
-                    <img src={logo} alt="logo"/>
-                    <button  className='confirm-button' onClick={Clicou}>Completar Cadastro</button>
-                </header>
-                <div>
-                    {click 
-                    ? <FlowPage />
-                    : <Page />
-                    }
+                <div className="input-block">
+                    <label htmlFor="user">Usuário</label>
+                    <input value={user} required placeholder={wrongUser}
+                        onChange={e => {setUser(e.target.value)}}
+                    />
                 </div>
+
+                <div className="input-block">
+                    <label htmlFor="password">Senha</label>
+                    <input value={password} required placeholder={wrongPass}
+                        onChange={e => setPassword(e.target.value)}
+                    />
+                </div>
+
+                <button onClick={handleRegister}>Entrar</button>
+            </div> 
+        </div> 
+
+        : <>
+            {/* <header className="header">
+                <img src={logo} alt="logo"/>
+                <button  className='confirm-button' onClick={Clicou}>Completar Cadastro</button>
+            </header> */}
+            <div>
+                {click 
+                ? <FlowPage />
+                : <Page />
+                }
             </div>
-            }
-        </div>
+        </>
+        }
+        </>
     )
 }
 

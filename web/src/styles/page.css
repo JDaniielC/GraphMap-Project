@@ -1,26 +1,19 @@
-#page-map {
+  #page-map {
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh - 118px);
+    z-index: 0;
   }
   
   .landing-page-form {
-    width: 500px;
-  
-    background: #ffffff;
-    border: 1px solid #d3e2e5;
-    border-radius: 30px;
-  
-    padding: 20px 40px;
-  
+    border: 2px solid #d3e2e5;
     position: absolute;
-    top: 30px;
-    left: 40px;
-  
-    z-index: 1;
+    top: 40px;
+    right: 10px;
+    z-index: 99;
   }
   
   #page-map .leaflet-container {
-    z-index: 0;
+    z-index: 2;
   }
   
   .landing-page-form fieldset {
@@ -30,7 +23,7 @@
   .landing-page-form fieldset legend {
     width: 100%;
   
-    font-size: 32px;
+    font-size: 30px;
     line-height: 34px;
     color: #5c8599;
     font-weight: 700;
@@ -40,37 +33,13 @@
     padding-bottom: 20px;
   }
   
-  .landing-page-form .input-block + .input-block {
-    margin-top: 24px;
-  }
-  
-  .landing-page-form .input-block label {
-    display: flex;
-    color: #8fa7b3;
-    margin-bottom: 8px;
-    line-height: 24px;
-  }
-  
-  .landing-page-form .input-block label span {
-    font-size: 14px;
-    color: #8fa7b3;
-    margin-left: 24px;
-    line-height: 24px;
-  }
-  
   .landing-page-form .input-block input {
-    width: 100%;
     background: #f5f8fa;
     border: 1px solid #d3e2e5;
-    border-radius: 20px;
+    border-radius: 12px;
     outline: none;
-    color: #5c8599;
   }
   
-  .landing-page-form .input-block input {
-    height: 44px;
-    padding: 0 16px;
-  }
   /* Pop Up - Marker */
   
   #page-map .map-popup .leaflet-popup-content-wrapper {
@@ -79,44 +48,7 @@
     box-shadow: none;
   }
   
-  #page-map .map-popup .leaflet-popup-content h3 {
-    color: #0089a5;
-    font-size: 20px;
-    font-weight: bold;
-    margin: 8px 12px;
-  }
-  
-  #page-map .map-popup .leaflet-popup-content p {
-    color: #042f38;
-    font-size: 12px;
-    font-weight: bold;
-    margin: 8px 12px;
-    line-height: 15px;
-  }
-  
   #page-map .map-popup .leaflet-popup-tip-container {
     display: none;
   }
   
-  /* Styling react select */
-  
-  .filter__control {
-    border-radius: 20px !important;
-  
-    width: 100% !important;
-    background: #f5f8fa !important;
-    border: 1px solid #d3e2e5 !important;
-    border-radius: 20px !important;
-    outline: none !important;
-    color: #5c8599 !important;
-  }
-  
-  .filter__option {
-    background: #f5f8fa !important;
-    color: #5c8599 !important;
-  }
-  
-  .filter__option--is-focused {
-    background: #d3e2e5 !important;
-    color: #010101 !important;
-  }
