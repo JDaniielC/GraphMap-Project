@@ -1,6 +1,7 @@
   #page-map {
     width: 100vw;
-    height: calc(100vh - 118px);
+    /* height: calc(100vh - 118px); */
+    height: 100vh;
     z-index: 0;
   }
   

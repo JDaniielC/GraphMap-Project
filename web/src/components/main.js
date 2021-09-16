@@ -5,6 +5,7 @@ import FlowPage from './reactFlow';
 
 import logo from '../styles/logo.png'
 import '../styles/loginPage.css'
+import edit from '../styles/edit.png'
 
 const Main = () => {
     const [click, setClick] = useState(true);
@@ -39,31 +40,29 @@ const Main = () => {
         {!enter 
         ? <div className="main">
             <div className="login-container">
-                <h1>Graph Project</h1>
+                <h1>GraphMap Project</h1>
 
                 <div className="input-block">
-                    <label htmlFor="user">Usuário</label>
                     <input value={user} required placeholder={wrongUser}
                         onChange={e => {setUser(e.target.value)}}
                     />
                 </div>
 
                 <div className="input-block">
-                    <label htmlFor="password">Senha</label>
                     <input value={password} required placeholder={wrongPass}
                         onChange={e => setPassword(e.target.value)}
                     />
                 </div>
 
-                <button onClick={handleRegister}>Entrar</button>
+                <button id='copy' onClick={handleRegister}>Entrar</button>
+                <div id="div"></div>
+                <button id='forget'>Esqueceu a senha?</button>
             </div> 
         </div> 
 
         : <>
-            {/* <header className="header">
-                <img src={logo} alt="logo"/>
-                <button  className='confirm-button' onClick={Clicou}>Completar Cadastro</button>
-            </header> */}
+        <img className='show' onClick={Clicou} src={logo} alt="Mostrar cadastrados" />
+        <img className='edit' onClick={Clicou} src={edit} alt="Cadastro" />
             <div>
                 {click 
                 ? <FlowPage />

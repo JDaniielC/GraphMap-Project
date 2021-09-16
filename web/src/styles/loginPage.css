@@ -6,62 +6,99 @@
 }
 
 .login-container {
-    background-color: rgb(158, 158, 158);
+    background-color: rgb(255, 255, 255);
     padding: 1em 3em;
     border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
 }
 
 .login-container h1 {
-    color:#FFF;
+    color:rgb(255, 154, 154);
     font-style: italic;
-    font-size: 50px;
-}
-
-.login-container label {
-    margin-top: 50px;
-    font-size: 25px;
-    align-self: center;
+    font-size: 40px;
+    margin-bottom: 0.4em;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .login-container .input-block {
-    width: 100%;
-    max-width: 300px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     margin-top: 5px;
 }
 
 .login-container .input-block input {
-    margin-top: 5px;
-    border: 1px solid #ddd;
+    margin-top: 10px;
+    border: 1px solid rgb(90, 90, 90);
     border-radius: 4px;
     height: 48px;
-    padding: 0 20px;
-    font-size: 16px;
-    color: #666;
+    padding: 0 25px;
+    font-size: 17px;
+    background-color: rgb(255, 255, 255);
 }
 
 .login-container .input-block input::placeholder {
-    color: #999;
+    color: rgb(114, 114, 114);
+    font-weight: bold;
 }
 
-button.confirm-button {
-    margin-top: 25px;
-    padding: 17px 35px;
-    border: 0;
+.show {
+    width: 75px;
+    height: 75px;
+    border-radius: 20%;
+    
     cursor: pointer;
-    border-radius: 4px;
+    position: absolute;
+    top: 150px;
+    right: 37px;
+    z-index: 99;
+}
+
+.edit {
+    width: 75px;
+    height: 75px;
+    border-radius: 20%;
+    
+    cursor: pointer;
+    position: absolute;
+    top: 50px;
+    right: 30px;
+    z-index: 99;
+}
+  
+.edit:hover .show:hover {
+    box-shadow: 0 2px 4px rgb(0 1 0 / 20%);
+}
+  
+#copy {
+    margin-top: 1em;
+    background-color: #ffa47a;
+    border: none;
+    border-radius: 6px;
+    font-size: 24px;
+    line-height: 45px;
+    padding: 5px 45px;
+    cursor: pointer;
+    color: rgb(255, 255, 255);
     font-weight: bold;
-    color: #ffffff;
-    font-size: 17px;
-    transition: background-color 0.2s;
-  }
-  
-button.confirm-button:hover {
-    background-color: #6c79f5;
-  }
-  
+}
+
+#div {
+    margin-top: 20px;
+    border-bottom: 1px solid rgb(136, 136, 136);
+    width: 300px;
+}
+
+#forget {
+    border: 0;
+    background-color: rgb(255, 255, 255);
+    cursor: pointer;
+    margin: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    color: rgb(255, 104, 104);
+}

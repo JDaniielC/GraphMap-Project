@@ -4,29 +4,18 @@
     box-sizing: border-box;
 }
 
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font: 400 1.8rem/1 'Nunito', sans-serif;
-    padding: 1rem 2rem;
-    background: rgb(93, 207, 252);
-}
-
-img {
-    width: 50px;
-    height: 50px;
-}
-
 .content {
-    display: flex;
-    padding: 15px 15px 5px 15px;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    overflow: hidden;
 }
 
 .flow {
-    height: calc(100vh - 7em);
-    margin-right: 75px;
-    width: min(70%, 112rem);
+    height: 97%;
+    width: 97%;
+    max-width: 100vw;
+    margin: 10px;
     background: white;
     border: solid .1px;
     border-radius: 4px;
@@ -46,22 +35,27 @@ img {
     justify-content: center;
     cursor: pointer;
     transition: 400ms;
+    font-family: monospace;
 }
 
 .form button:hover {
     background-color: #2fb86e;
 }
 
-
 .form {
     display: flex;
     flex-direction: column;
     width: 320px;
     background: #FFF;
-    box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.02);
+    box-shadow: 0 0 15px rgb(0 0 0 / 20%);
     border-radius: 4px;
     padding: 30px 20px;
-    height: 90%;
+    height: fit-content;
+    position: absolute;
+    z-index: 99;
+    top: 15px;
+    left: 15px;
+    border: 1px solid #ddd;
 }
 .form h1 {
     text-align: center;
