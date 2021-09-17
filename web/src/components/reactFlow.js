@@ -8,16 +8,23 @@ import ReactFlow, {
    removeElements
   } from 'react-flow-renderer';
 import localforage from 'localforage';
-import initialElements from './initialElements'
 import "../styles/overlay.css";
 import '../styles/flow.css';
 import '../styles/animations.css'
 import api from '../services/api';
 
+import Node from './node'
+
 localforage.config({
   name: 'react-flow-docs',
   storeName: 'flows',
 });
+
+const nodeTypes = {
+  man: Node,
+};
+
+const initialElements = [];
 
 const getNodeId = () => `randomnode_${+new Date()}`;
 
@@ -73,7 +80,7 @@ const FlowPage = () => {
         }
       }
     };
-
+    setElements([{id: '1', type: 'man', position: {x: 0, y: 50}, data: {onChange: onchange, color: '#ddd'}}])
     restoreFlow();
   }, [setElements]);
 
@@ -109,7 +116,7 @@ const FlowPage = () => {
       position: {
         x: countX,
         y: countY + 100,
-      },
+      }
     };
 
     setName(''); setValue('');
@@ -163,11 +170,12 @@ const FlowPage = () => {
           onLoad={setRfInstance}
           onElementClick = {selectNode}
           onNodeDragStop = {(evt, node) => localforage.setItem("lastNode", node)}
+          nodeTypes={nodeTypes}
         >
           <Background
             variant="lines"
-            gap={12}
-            size={1}
+            gap={20}
+            size={3}
           />
 
           <MiniMap
@@ -183,7 +191,8 @@ const FlowPage = () => {
                   return '#eee';
               }
             }}
-            nodeStrokeWidth={3}
+            nodeStrokeWidth={2}
+            nodeBorderRadius={8}
           />
           <Controls />
         </ReactFlow>
@@ -213,6 +222,10 @@ const FlowPage = () => {
         <button onClick={onSave}>Salvar mapa</button>
 
         <button onClick={onRestore}>Restaurar</button>
+
+        <h3 className='tutorial'>Atenção</h3>
+        <p className='note'>Para apagar nó, use a tecla backspace.</p>
+        <p className='note'>Lembre-se de atualizar o cadastro!</p>
       </div>
     </div>
     <div className = "overlay" style = {{ 

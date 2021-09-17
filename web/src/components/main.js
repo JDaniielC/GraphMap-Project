@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Page from './statisticPage'
+import Page from './mapPage'
 import FlowPage from './reactFlow';
 
 import logo from '../styles/logo.png'
@@ -12,8 +12,8 @@ const Main = () => {
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
     const [enter, setEnter] = useState(false)
-    const [wrongUser, setWrongUser] = useState('Digite admin')
-    const [wrongPass, setWrongPass] = useState('Digite admin')
+    const [wrongUser, setWrongUser] = useState('Digite o usuário')
+    const [wrongPass, setWrongPass] = useState('Digite a senha')
 
     function handleRegister (e) {
         e.preventDefault();
@@ -33,6 +33,11 @@ const Main = () => {
     
     function Clicou() {
         setClick(!click)
+    }
+
+    function help() {
+        setWrongUser('Digite admin');
+        setWrongPass('Digite admin');
     }
 
     return(
@@ -56,7 +61,7 @@ const Main = () => {
 
                 <button id='copy' onClick={handleRegister}>Entrar</button>
                 <div id="div"></div>
-                <button id='forget'>Esqueceu a senha?</button>
+                <button id='forget' onClick={help} >Esqueceu a senha?</button>
             </div> 
         </div> 
 
