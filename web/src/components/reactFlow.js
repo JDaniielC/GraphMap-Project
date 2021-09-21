@@ -6,14 +6,14 @@ import ReactFlow, {
    ReactFlowProvider, 
    addEdge, 
    removeElements
-  } from 'react-flow-renderer';
+} from 'react-flow-renderer';
 import localforage from 'localforage';
 import "../styles/overlay.css";
 import '../styles/flow.css';
 import '../styles/animations.css'
 import api from '../services/api';
 
-import Node from './node'
+import sexNode from './node';
 
 localforage.config({
   name: 'react-flow-docs',
@@ -21,7 +21,7 @@ localforage.config({
 });
 
 const nodeTypes = {
-  man: Node,
+  selectorNode: sexNode,
 };
 
 const initialElements = [];
@@ -37,6 +37,7 @@ const FlowPage = () => {
   const [modalX, setModalX] = useState("calc(50vw - 100px)");
   const [modalY, setModalY] = useState("calc(50vh - 150px)");
   const [elements, setElements] = useState(initialElements);
+  const [sex, setSex] = useState();
 
   const onElementsRemove = (elementsToRemove) =>
     setElements((els) => removeElements(elementsToRemove, els));
@@ -80,7 +81,6 @@ const FlowPage = () => {
         }
       }
     };
-    setElements([{id: '1', type: 'man', position: {x: 0, y: 50}, data: {onChange: onchange, color: '#ddd'}}])
     restoreFlow();
   }, [setElements]);
 
@@ -94,7 +94,6 @@ const FlowPage = () => {
         }
       }
     };
-
     restoreFlow();
   }, []);
  
@@ -112,6 +111,7 @@ const FlowPage = () => {
         payment: value,
         since: new Date(),
         discount: 0, 
+        type: sex > 0 ? 'selectorNode' : 'default',
       },
       position: {
         x: countX,
@@ -215,6 +215,19 @@ const FlowPage = () => {
             id= "value" required
             onChange={e => setValue(e.target.value)}
           />
+        </div>
+
+        <div className="input-block radio">
+          <label htmlFor="sex">Sexo</label>
+          <input type="radio" id= "neutro" name='sex'
+          onChange={setSex(0)}/> 
+          Neutro
+          <input type="radio" name= "sex" id='male'
+          onChange={setSex(1)}/> 
+          Masculino
+          <input type="radio" name= "sex" id='female'
+          onChange={setSex(2)}/> 
+          Feminino
         </div>
 
         <button onClick={handleRegister}> Cadastrar </button>

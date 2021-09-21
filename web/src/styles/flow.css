@@ -96,3 +96,8 @@
     margin: auto;
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
+
+.form .input-block.radio input{
+    width: 8%;
+    height: auto;
+}
