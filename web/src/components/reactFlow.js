@@ -220,13 +220,13 @@ const FlowPage = () => {
         <div className="input-block radio">
           <label htmlFor="sex">Sexo</label>
           <input type="radio" id= "neutro" name='sex'
-          onChange={setSex(0)}/> 
+          /> 
           Neutro
           <input type="radio" name= "sex" id='male'
-          onChange={setSex(1)}/> 
+          /> 
           Masculino
           <input type="radio" name= "sex" id='female'
-          onChange={setSex(2)}/> 
+          /> 
           Feminino
         </div>
 
