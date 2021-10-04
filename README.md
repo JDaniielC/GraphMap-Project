@@ -1,5 +1,5 @@
 <h4 align="center">
-  🚀 GraphMap - TreeGraph Project
+  🚀 GraphMap Project
 </h4>
 
 Projeto individual com objetivo de concretizar o saber.
