@@ -1,5 +1,5 @@
 <h4 align="center">
-  🚀 GraphMap - TreeGraph Project
+  🚀 GraphMap Project
 </h4>
 
 Projeto individual com objetivo de concretizar o saber.
@@ -13,16 +13,13 @@ Projeto individual com objetivo de concretizar o saber.
 - React Leaflet (Mapa)
 - React Flow (Grafo)
 
-<img alt="FlowMap" src=".github/login.png" width="80%">
-
 ## Configurado em:
 
 - Cors
 - Express
 - Mongoose
-- Axios
-
-<img alt="Map" src=".github/map.png" width="80%">
+- Axios 
+<img alt="Map" src=".github/map.png" width="100%">
 
 ## Instalação de depedências
 
