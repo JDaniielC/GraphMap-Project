@@ -119,7 +119,7 @@ const FlowPage = () => {
       }
     };
 
-    setName(''); setValue('');
+    setName(''); setValue(''); 
     localforage.setItem("lastNode", newNode);
     setElements((els) => els.concat(newNode));
   }, [setElements, name, value]);

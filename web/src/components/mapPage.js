@@ -31,7 +31,7 @@ function Page() {
                 <legend>
                     Atualizar Cadastro
                 </legend>
-                
+
                 <div className="input-block">
                 <label htmlFor="name">Nome do aluno</label>
                 <input name="name" id="name" value={name} 
@@ -88,8 +88,7 @@ function Page() {
                 <div className="input-block">
                 <label htmlFor="value">Mensalidade</label>
                 <input type="number" name= "value" value={value}
-                    id= "value" required
-                    readOnly
+                    id= "value" required readOnly
                 />
                 </div>
             </fieldset>
