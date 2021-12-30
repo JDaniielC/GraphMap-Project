@@ -5,28 +5,32 @@ import ReactFlow, {
    Controls, 
    ReactFlowProvider, 
    addEdge, 
-   removeElements
+   removeElements,
 } from 'react-flow-renderer';
+
 import localforage from 'localforage';
+import api from '../services/api';
+
+import '../styles/node.css'
 import "../styles/overlay.css";
 import '../styles/flow.css';
 import '../styles/animations.css'
-import api from '../services/api';
 
-import sexNode from './node';
+import { homem, mulher } from './node';
 
 localforage.config({
   name: 'react-flow-docs',
   storeName: 'flows',
 });
 
-const nodeTypes = {
-  selectorNode: sexNode,
-};
-
 const initialElements = [];
 
 const getNodeId = () => `randomnode_${+new Date()}`;
+
+const nodeTypes = {
+  male: homem,
+  female: mulher,
+};
 
 const FlowPage = () => {
   const [name, setName] = useState('');
@@ -37,7 +41,7 @@ const FlowPage = () => {
   const [modalX, setModalX] = useState("calc(50vw - 100px)");
   const [modalY, setModalY] = useState("calc(50vh - 150px)");
   const [elements, setElements] = useState(initialElements);
-  const [sex, setSex] = useState();
+  const [gender, setGender] = useState('male');
 
   const onElementsRemove = (elementsToRemove) =>
     setElements((els) => removeElements(elementsToRemove, els));
@@ -111,18 +115,18 @@ const FlowPage = () => {
         payment: value,
         since: new Date(),
         discount: 0, 
-        type: sex > 0 ? 'selectorNode' : 'default',
+        gender: gender,
       },
       position: {
         x: countX,
         y: countY + 100,
-      }
+      },
+      type: gender === 'transgender' ? 'default' : gender,
     };
-
     setName(''); setValue(''); 
     localforage.setItem("lastNode", newNode);
     setElements((els) => els.concat(newNode));
-  }, [setElements, name, value]);
+  }, [name, value, gender]);
 
   function selectNode(evt, node) {
     function formatDate(data){
@@ -159,18 +163,22 @@ const FlowPage = () => {
     setShowModal(true);
   }
 
+  const handleChange = (event) => {
+    setGender(event.target.value)
+  }
+
   return (
   <ReactFlowProvider>
     <div className="content">
     <div className="animate-appear flow">
         <ReactFlow
           elements={elements}
+          nodeTypes={nodeTypes}
           onElementsRemove={onElementsRemove}
           onConnect={onConnect}
           onLoad={setRfInstance}
           onElementClick = {selectNode}
           onNodeDragStop = {(evt, node) => localforage.setItem("lastNode", node)}
-          nodeTypes={nodeTypes}
         >
           <Background
             variant="lines"
@@ -181,11 +189,11 @@ const FlowPage = () => {
           <MiniMap
             nodeColor={(node) => {
               switch (node.type) {
-                case 'input':
+                case 'female':
                   return 'red';
                 case 'default':
                   return '#00ff00';
-                case 'output':
+                case 'male':
                   return 'rgb(0,0,255)';
                 default:
                   return '#eee';
@@ -218,16 +226,25 @@ const FlowPage = () => {
         </div>
 
         <div className="input-block radio">
-          <label htmlFor="sex">Sexo</label>
-          <input type="radio" id= "neutro" name='sex'
-          /> 
-          Neutro
-          <input type="radio" name= "sex" id='male'
-          /> 
-          Masculino
-          <input type="radio" name= "sex" id='female'
-          /> 
-          Feminino
+          <label htmlFor="gender">gendero</label>
+          <input
+            type="radio"
+            value="male"
+            checked={gender === 'male'}
+            onChange={handleChange}
+          /> Homem
+          <input
+            type="radio"
+            value="female"
+            checked={gender === 'female'}
+            onChange={handleChange}
+          /> Mulher
+          <input
+            type="radio"
+            value="transgender"
+            checked={gender === 'transgender'}
+            onChange={handleChange}
+          /> Transgénero
         </div>
 
         <button onClick={handleRegister}> Cadastrar </button>
