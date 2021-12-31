@@ -119,10 +119,18 @@ const FlowPage = () => {
       }
     };
 
+    var verif = false;
+    for (const element of elements) {
+      if (element.data.label === name) verif = true;
+    }
     setName(''); setValue(''); 
-    localforage.setItem("lastNode", newNode);
-    setElements((els) => els.concat(newNode));
-  }, [setElements, name, value]);
+    if (!verif) {
+      localforage.setItem("lastNode", newNode);
+      setElements((els) => els.concat(newNode));
+    } else {
+      alert('Registro já existente, tente novamente.');
+    }
+  }, [name, value, sex]);
 
   function selectNode(evt, node) {
     function formatDate(data){
