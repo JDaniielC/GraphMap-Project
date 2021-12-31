@@ -16,7 +16,7 @@ import "../styles/overlay.css";
 import '../styles/flow.css';
 import '../styles/animations.css'
 
-import { homem, mulher } from './node';
+import { idoso, adulto } from './node';
 
 localforage.config({
   name: 'react-flow-docs',
@@ -28,8 +28,8 @@ const initialElements = [];
 const getNodeId = () => `randomnode_${+new Date()}`;
 
 const nodeTypes = {
-  male: homem,
-  female: mulher,
+  idoso: idoso,
+  adulto: adulto,
 };
 
 const FlowPage = () => {
@@ -41,7 +41,7 @@ const FlowPage = () => {
   const [modalX, setModalX] = useState("calc(50vw - 100px)");
   const [modalY, setModalY] = useState("calc(50vh - 150px)");
   const [elements, setElements] = useState(initialElements);
-  const [gender, setGender] = useState('male');
+  const [idade, setIdade] = useState(0);
 
   const onElementsRemove = (elementsToRemove) =>
     setElements((els) => removeElements(elementsToRemove, els));
@@ -108,6 +108,11 @@ const FlowPage = () => {
     const countY = (node) ? node.position.y : 0;
     const uniqueId = getNodeId();
 
+    var tipo;
+    if (idade > 18 && idade < 60) tipo = 'adulto';
+    else if (idade > 60) tipo = 'idoso';
+    else tipo = 'default';
+
     const newNode = {
       id: uniqueId,
       data: { 
@@ -115,18 +120,17 @@ const FlowPage = () => {
         payment: value,
         since: new Date(),
         discount: 0, 
-        gender: gender,
       },
       position: {
         x: countX,
         y: countY + 100,
       },
-      type: gender === 'transgender' ? 'default' : gender,
+      type: tipo,
     };
     setName(''); setValue(''); 
     localforage.setItem("lastNode", newNode);
     setElements((els) => els.concat(newNode));
-  }, [name, value, gender]);
+  }, [name, value, idade]);
 
   function selectNode(evt, node) {
     function formatDate(data){
@@ -163,10 +167,6 @@ const FlowPage = () => {
     setShowModal(true);
   }
 
-  const handleChange = (event) => {
-    setGender(event.target.value)
-  }
-
   return (
   <ReactFlowProvider>
     <div className="content">
@@ -189,11 +189,11 @@ const FlowPage = () => {
           <MiniMap
             nodeColor={(node) => {
               switch (node.type) {
-                case 'female':
+                case 'idoso':
                   return 'red';
                 case 'default':
                   return '#00ff00';
-                case 'male':
+                case 'adulto':
                   return 'rgb(0,0,255)';
                 default:
                   return '#eee';
@@ -225,26 +225,13 @@ const FlowPage = () => {
           />
         </div>
 
-        <div className="input-block radio">
-          <label htmlFor="gender">gendero</label>
+        <div className="input-block">
+          <label htmlFor="idade">Idade</label>
           <input
-            type="radio"
-            value="male"
-            checked={gender === 'male'}
-            onChange={handleChange}
-          /> Homem
-          <input
-            type="radio"
-            value="female"
-            checked={gender === 'female'}
-            onChange={handleChange}
-          /> Mulher
-          <input
-            type="radio"
-            value="transgender"
-            checked={gender === 'transgender'}
-            onChange={handleChange}
-          /> Transgénero
+            type="number"
+            value={idade}
+            onChange={e => setIdade(e.target.value)}
+          />
         </div>
 
         <button onClick={handleRegister}> Cadastrar </button>
@@ -256,6 +243,13 @@ const FlowPage = () => {
         <h3 className='tutorial'>Atenção</h3>
         <p className='note'>Para apagar nó, use a tecla backspace.</p>
         <p className='note'>Lembre-se de atualizar o cadastro!</p>
+        <hr />
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px', alignItems: 'center' }}>
+          <div style={{ width: '0.8rem', height: '0.8rem', backgroundColor:'blue'}}/> <p>Para maiores de 18 anos</p>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px', alignItems: 'center' }}>
+          <div style={{ width: '0.8rem', height: '0.8rem', backgroundColor:'red'}}/> <p>Para maiores de 60 anos</p>
+        </div>
       </div>
     </div>
     <div className = "overlay" style = {{ 

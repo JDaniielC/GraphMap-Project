@@ -12,6 +12,7 @@ const FlowSchema = new Schema({
         x: Number,
         y: Number
     },
+    type: String,
     source: String,
     target: String,
 }, {

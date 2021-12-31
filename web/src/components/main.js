@@ -9,11 +9,11 @@ import edit from '../styles/edit.png'
 
 const Main = () => {
     const [click, setClick] = useState(true);
-    const [user, setUser] = useState('')
-    const [password, setPassword] = useState('')
-    const [enter, setEnter] = useState(false)
-    const [wrongUser, setWrongUser] = useState('Digite o usuário')
-    const [wrongPass, setWrongPass] = useState('Digite a senha')
+    const [user, setUser] = useState('');
+    const [password, setPassword] = useState('');
+    const [enter, setEnter] = useState(false);
+    const [wrongUser, setWrongUser] = useState('Digite o usuário');
+    const [wrongPass, setWrongPass] = useState('Digite a senha');
 
     function handleRegister (e) {
         e.preventDefault();
