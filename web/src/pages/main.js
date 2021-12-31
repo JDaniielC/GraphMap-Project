@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 
 import Page from './mapPage'
 import FlowPage from './reactFlow';
-
-import logo from '../styles/logo.png'
+import logo from '../assets/logo.png'
 import '../styles/loginPage.css'
-import edit from '../styles/edit.png'
+import edit from '../assets/edit.png'
 
 const Main = () => {
     const [click, setClick] = useState(true);
