@@ -7,7 +7,10 @@ import ReactFlow, {
    addEdge, 
    removeElements
 } from 'react-flow-renderer';
+import { Link } from 'react-router-dom'
 import localforage from 'localforage';
+import logo from '../styles/logo.png'
+
 import "../styles/overlay.css";
 import '../styles/flow.css';
 import '../styles/animations.css'
@@ -251,6 +254,8 @@ const FlowPage = () => {
       <p> Com {selectedNode.discount}% de desconto </p>
       <p>Criado em {selectedNode.since} </p>
     </div>
+    <Link to="/map"><img className='show' src={logo} alt="Mostrar cadastrados" /> </Link>
+    
   </ReactFlowProvider>
   );
 };

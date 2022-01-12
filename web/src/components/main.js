@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
-
-import Page from './mapPage'
-import FlowPage from './reactFlow';
-
-import logo from '../styles/logo.png'
+import { Navigate } from 'react-router-dom';
 import '../styles/loginPage.css'
-import edit from '../styles/edit.png'
 
 const Main = () => {
-    const [click, setClick] = useState(true);
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
     const [enter, setEnter] = useState(false)
@@ -30,10 +24,6 @@ const Main = () => {
         
         setUser(''); setPassword('');
     };
-    
-    function Clicou() {
-        setClick(!click)
-    }
 
     function help() {
         setWrongUser('Digite admin');
@@ -41,8 +31,7 @@ const Main = () => {
     }
 
     return(
-        <>
-        {!enter 
+        <> {!enter 
         ? <div className="main">
             <div className="login-container">
                 <h1>GraphMap Project</h1>
@@ -65,18 +54,8 @@ const Main = () => {
             </div> 
         </div> 
 
-        : <>
-        <img className='show' onClick={Clicou} src={logo} alt="Mostrar cadastrados" />
-        <img className='edit' onClick={Clicou} src={edit} alt="Cadastro" />
-            <div>
-                {click 
-                ? <FlowPage />
-                : <Page />
-                }
-            </div>
-        </>
-        }
-        </>
+        : <Navigate to="flow" /> 
+        } </>
     )
 }
 
