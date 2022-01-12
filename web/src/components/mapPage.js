@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import edit from '../styles/edit.png'
+import { Link } from 'react-router-dom'
 import "leaflet/dist/leaflet.css";
 import '../styles/page.css'
 
@@ -94,6 +96,7 @@ function Page() {
             </fieldset>
             <button onClick={handleRegister}> Atualizar Cadastro </button>
         </div>
+        <Link to="/flow"><img className='edit' src={edit} alt="Cadastro" /></Link>
 
     </div>
   );
