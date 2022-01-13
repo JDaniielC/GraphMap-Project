@@ -1,9 +1,11 @@
 import React, { useState, useRef, useMemo } from "react";
 import axios from "axios";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { Location, Icon } from '../components/icons';
+import edit from '../../assets/edit.png'
+import { Link } from 'react-router-dom'
+import { Location, Icon } from '../../components/Icons';
 import "leaflet/dist/leaflet.css";
-import '../styles/page.css'
+import './styles.css';
 
 const center = {
     lat: -10,
@@ -94,6 +96,7 @@ function Page() {
     }}>
         <button onClick={handleRegister}> Atualizar localização </button>
         </div>
+        <Link to="/flow"><img className='edit' src={edit} alt="Cadastro" /></Link>
     </div>
     );
 };

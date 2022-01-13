@@ -7,13 +7,16 @@ import ReactFlow, {
    addEdge, 
    removeElements
 } from 'react-flow-renderer';
+import { Link } from 'react-router-dom'
 import localforage from 'localforage';
-import "../styles/overlay.css";
-import '../styles/flow.css';
-import '../styles/animations.css'
-import api from '../services/api';
+import api from '../../services/api';
+import sexNode from '../../components/Node';
 
-import sexNode from './node';
+import logo from '../../assets/logo.png'
+import './styles.css';
+import "../../styles/overlay.css";
+import '../../styles/animations.css'
+
 
 localforage.config({
   name: 'react-flow-docs',
@@ -259,6 +262,8 @@ const FlowPage = () => {
       <p> Com {selectedNode.discount}% de desconto </p>
       <p>Criado em {selectedNode.since} </p>
     </div>
+    <Link to="/map"><img className='show' src={logo} alt="Mostrar cadastrados" /> </Link>
+    
   </ReactFlowProvider>
   );
 };

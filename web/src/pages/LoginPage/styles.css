@@ -45,30 +45,6 @@
     color: rgb(114, 114, 114);
     font-weight: bold;
 }
-
-.show {
-    width: 75px;
-    height: 75px;
-    border-radius: 20%;
-    
-    cursor: pointer;
-    position: absolute;
-    top: 150px;
-    right: 37px;
-    z-index: 99;
-}
-
-.edit {
-    width: 75px;
-    height: 75px;
-    border-radius: 20%;
-    
-    cursor: pointer;
-    position: absolute;
-    top: 50px;
-    right: 30px;
-    z-index: 99;
-}
   
 .edit:hover .show:hover {
     box-shadow: 0 2px 4px rgb(0 1 0 / 20%);
