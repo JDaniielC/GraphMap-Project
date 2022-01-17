@@ -19,6 +19,7 @@ Projeto individual com objetivo de concretizar o saber.
 - Express
 - Mongoose
 - Axios 
+- React Routes
 <img alt="Map" src=".github/map.png" width="100%">
 
 ## Instalação de depedências
