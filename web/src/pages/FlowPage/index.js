@@ -9,14 +9,14 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 import { Link } from 'react-router-dom'
 import localforage from 'localforage';
-import logo from '../styles/logo.png'
+import api from '../../services/api';
+import sexNode from '../../components/Node';
 
-import "../styles/overlay.css";
-import '../styles/flow.css';
-import '../styles/animations.css'
-import api from '../services/api';
+import logo from '../../assets/logo.png'
+import './styles.css';
+import "../../styles/overlay.css";
+import '../../styles/animations.css'
 
-import sexNode from './node';
 
 localforage.config({
   name: 'react-flow-docs',
@@ -122,10 +122,18 @@ const FlowPage = () => {
       }
     };
 
+    var verif = false;
+    for (const element of elements) {
+      if (element.data.label === name) verif = true;
+    }
     setName(''); setValue(''); 
-    localforage.setItem("lastNode", newNode);
-    setElements((els) => els.concat(newNode));
-  }, [setElements, name, value]);
+    if (!verif) {
+      localforage.setItem("lastNode", newNode);
+      setElements((els) => els.concat(newNode));
+    } else {
+      alert('Registro já existente, tente novamente.');
+    }
+  }, [name, value, sex]);
 
   function selectNode(evt, node) {
     function formatDate(data){

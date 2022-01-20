@@ -1,11 +1,6 @@
 import React, { memo } from 'react';
-
 import { Handle } from 'react-flow-renderer';
-import manIcon from '../styles/woman.svg';
-import womanIcon from '../styles/man.svg';
-import '../styles/node.css'
-
-// const getNodeId = () => `point_${+new Date()}`;
+import './styles.css';
 
 export default memo(({ data, isConnectable }) => {
   return (
@@ -18,9 +13,6 @@ export default memo(({ data, isConnectable }) => {
       />
 
       {data.label}
-      {data.sex === 1 
-      ? <img src={manIcon} alt="Homem" style={{width: 30, height: 30}}/> 
-      : <img src={womanIcon} alt="Mulher" style={{width: 30, height: 30}}/>}
       
       <Handle
         type="source"
