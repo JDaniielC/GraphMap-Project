@@ -2,10 +2,10 @@ import Routes from './routes'
 
 function App() {
   return (
-    <div className="App" id="app">
+    <div className='App' id='app'>
       <Routes />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
