@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Navigate } from 'react-router-dom'
+import logo from '../abagatinho.png'
 import '../styles/loginPage.css'
 
 const Main = () => {
@@ -34,8 +35,9 @@ const Main = () => {
     <>
       {!enter ? (
         <div className='main'>
+          <img src={logo} alt='logo' id='logoImage' />
           <div className='login-container'>
-            <h1>GraphMap Project</h1>
+            <h1>Cat</h1>
             <div className='input-block'>
               <input
                 value={user}
@@ -60,7 +62,7 @@ const Main = () => {
             <div id='div'></div>
             <button id='forget' onClick={help}>
               Esqueceu a senha?
-            </button>{' '}
+            </button>
           </div>
         </div>
       ) : (
