@@ -20,6 +20,8 @@ Projeto individual com objetivo de concretizar o saber.
 - Mongoose
 - Axios 
 - React Routes
+- Eslint
+- Prettier
 <img alt="Map" src=".github/map.png" width="100%">
 
 ## Instalação de depedências
