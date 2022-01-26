@@ -1,7 +1,59 @@
   #page-map {
     width: 100vw;
     height: 100vh;
+    display: flex;
+    justify-content: center;
     z-index: 0;
+  }
+
+  #page-map button{
+    background-color: green;
+    cursor: pointer;
+    padding: 0.2em;
+    border-radius: 4px;
+    font-weight: bold;
+    color: white;
+  }
+
+  .mapInformation {
+    display: flex;
+    padding: 1em 2em;
+    background-color: #f9d798;
+    position: absolute;
+    border: orange 2px solid;
+    margin-top: 2em;
+    z-index: 99;
+    border-radius: 2em;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .divButtons {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 500px;
+    right: 10px;
+    z-index: 99;
+    top: 87%;
+    right: 5%;
+  }
+
+  .divButtons #markButton {
+    background-position: center;
+    background-size: 120px;
+    background-image: linear-gradient(90deg, #96D4D4, #0052a7);
+    padding: 1rem;
+    font-size: large;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid #00a2ff;
+    color: #fff;
+  }
+  
+  .divButtons #markButton:hover {
+    background-image: linear-gradient(90deg, #9bffff, #0866cc);
+    box-shadow: 2.5px 5px #8888885e;
   }
   
   .landing-page-form {

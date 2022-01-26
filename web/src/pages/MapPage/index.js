@@ -3,7 +3,8 @@ import axios from "axios";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import edit from '../../assets/edit.png'
 import { Link } from 'react-router-dom'
-import { Location, Icon } from '../../components/Icons';
+import { Location, Icon } from '../../components/icons';
+import buttonIcon from '../../assets/buttonMarker.png';
 import "leaflet/dist/leaflet.css";
 import './styles.css';
 
@@ -13,18 +14,20 @@ const center = {
 }
 const maxBounds = [[0, -60],[-35, -30]]
 
-const address = {
-    pais: '',
-    estado: '',
-    cidade: '',
-    municipio: '',
-}
-
-const locais = [];
+const locais = [{
+    address: {
+        pais: '',
+        estado: '',
+        cidade: '',
+        municipio: '',
+    },
+    position: {
+        lat: 0,
+        lng: 0,
+    }
+}];
 
 function Page() {
-    const [home, setHome] = useState(address);
-
     const [position, setPosition] = useState(center)
     const markerRef = useRef(null)
 
@@ -51,16 +54,26 @@ function Page() {
         } = data.address;
         const municipio = municipality ? municipality.split(' ').slice(4).join(' ') : '';
         const cidade = town ? town : city;
-        setHome({
+
+        locais.push({address: {
             pais: country,
             estado: state, 
             municipio: municipio,
             cidade: cidade
-        }); 
-        locais.push(position);
+        }, position});
     }
+
+    const setLocation = (address = locais) => {
+        console.log(address);
+    }
+
     return (
     <div id='page-map'>
+        <div className='mapInformation'>
+            <h2>Selecione a localização:</h2>
+            <p>Arraste o ponto até o local desejado e clique no botão</p>
+            <p>para selecionar a localização e depois confirme.</p>
+        </div>
     <MapContainer maxBounds={maxBounds} center={center} zoom={6} minZoom={7} style={{ height: "100%", width: '100%' }}>
         <TileLayer
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -75,26 +88,21 @@ function Page() {
         >
         </Marker>
         { locais.map((local) => (
-            <Marker position={local} icon={Location}>
+            <Marker position={local.position} icon={Location}>
                 <Popup>
-                    <h4>Localização atual:</h4>
-                    <p> {home.municipio}, {home.cidade} 
-                    <br />{home.estado}, {home.pais}</p>
+                    <h4>Localização:</h4>
+                    <p> {local.address.municipio}, {local.address.cidade} 
+                    <br />{local.address.estado}, {local.address.pais}</p>
+                    <button onClick={() => setLocation(local)}>Confirmar</button>
                 </Popup>
             </Marker>
         ))}
     </MapContainer>
 
-    <div 
-    style={{
-        position: 'absolute',
-        width: '100px',
-        height: '100px',
-        top: '500px',
-        right: '10px',
-        zIndex: 99
-    }}>
-        <button onClick={handleRegister}> Atualizar localização </button>
+    <div className='divButtons'>
+        <button id='markButton' onClick={handleRegister}> 
+            Selecionar localização
+        </button>
         </div>
         <Link to="/flow"><img className='edit' src={edit} alt="Cadastro" /></Link>
     </div>
