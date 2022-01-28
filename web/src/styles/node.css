@@ -1,10 +1,36 @@
 .noBox {
-    padding: 10px;
-    border-radius: 3px;
-    max-width: 150px;
-    font-size: 12px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     text-align: center;
-    border-width: 1px;
-    border-style: solid;
+    max-width: 200px;
+    min-width: 200px;
     background: #fff;
+    border-radius: 3px;
+    border: solid 1px;
+    font-size: 12px;
+    padding: 10px;
+    transition: 175ms;
+}
+
+.noBox .react-flow__handle {
+    background: #9d5353;
+    border: none;
+}
+
+.noBox:hover {
+    font-weight: bold;
+    box-shadow: 2px 3px #888888;;
+}
+
+.noBoxImage {
+    margin-left: 5px;
+    padding-left: 5px;
+    border-left: 1px solid black;
+}
+
+.noBox img {
+    width: 50px;
+    height: 50px;
+    pointer-events: none;
 }

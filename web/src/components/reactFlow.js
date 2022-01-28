@@ -16,7 +16,7 @@ import "../styles/overlay.css";
 import '../styles/flow.css';
 import '../styles/animations.css'
 
-import { idoso, adulto } from './node';
+import { money, pray, clothing, food } from './node';
 
 localforage.config({
   name: 'react-flow-docs',
@@ -28,8 +28,10 @@ const initialElements = [];
 const getNodeId = () => `randomnode_${+new Date()}`;
 
 const nodeTypes = {
-  idoso: idoso,
-  adulto: adulto,
+  money: money,
+  pray: pray,
+  clothing: clothing,
+  food: food,
 };
 
 const FlowPage = () => {
@@ -109,8 +111,10 @@ const FlowPage = () => {
     const uniqueId = getNodeId();
 
     var tipo;
-    if (idade > 18 && idade < 60) tipo = 'adulto';
-    else if (idade > 60) tipo = 'idoso';
+    if (idade > 18 && idade < 20) tipo = 'food';
+    else if (idade > 20 && idade < 30) tipo = 'clothing';
+    else if (idade > 40 && idade < 50) tipo = 'money';
+    else if (idade > 60) tipo = 'pray';
     else tipo = 'default';
 
     const newNode = {
@@ -189,12 +193,16 @@ const FlowPage = () => {
           <MiniMap
             nodeColor={(node) => {
               switch (node.type) {
-                case 'idoso':
+                case 'money':
                   return 'red';
                 case 'default':
                   return '#00ff00';
-                case 'adulto':
+                case 'clothing':
                   return 'rgb(0,0,255)';
+                case 'pray':
+                  return 'yellow';
+                case 'food':
+                  return 'orange';
                 default:
                   return '#eee';
               }
