@@ -89,15 +89,10 @@
 .tutorial {
     margin: auto;
     margin-top: 2em;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Lucida Sans', Verdana, sans-serif;
 }
 
 .note {
     margin: auto;
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-}
-
-.form .input-block.radio input{
-    width: 8%;
-    height: auto;
 }

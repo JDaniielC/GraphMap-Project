@@ -1,40 +1,49 @@
 import { useState, useCallback, useEffect } from 'react'
 import ReactFlow, {
-  Background,
-  MiniMap,
-  Controls,
-  ReactFlowProvider,
-  addEdge,
-  removeElements,
-} from 'react-flow-renderer'
-
+   Background, 
+   MiniMap, 
+   Controls, 
+   ReactFlowProvider, 
+   addEdge, 
+   removeElements,
+} from 'react-flow-renderer';
 import { Link } from 'react-router-dom'
 import localforage from 'localforage'
 import logo from '../styles/logo.png'
-
-import '../styles/overlay.css'
-import '../styles/flow.css'
+import '../styles/node.css'
+import api from '../services/api';
+import "../styles/overlay.css";
+import '../styles/flow.css';
 import '../styles/animations.css'
-import api from '../services/api'
+
+import { money, pray, clothing, food } from './node';
 
 localforage.config({
   name: 'react-flow-docs',
   storeName: 'flows',
 })
 
-const initialElements = []
+const initialElements = [];
 
-const getNodeId = () => `randomnode_${+new Date()}`
+const getNodeId = () => `randomnode_${+new Date()}`;
+
+const nodeTypes = {
+  money: money,
+  pray: pray,
+  clothing: clothing,
+  food: food,
+};
 
 const FlowPage = () => {
-  const [name, setName] = useState('')
-  const [value, setValue] = useState('')
-  const [showModal, setShowModal] = useState(false)
-  const [rfInstance, setRfInstance] = useState(null)
-  const [selectedNode, setSelectedNode] = useState({})
-  const [modalX, setModalX] = useState('calc(50vw - 100px)')
-  const [modalY, setModalY] = useState('calc(50vh - 150px)')
-  const [elements, setElements] = useState(initialElements)
+  const [name, setName] = useState('');
+  const [value, setValue] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [rfInstance, setRfInstance] = useState(null);
+  const [selectedNode, setSelectedNode] = useState({});
+  const [modalX, setModalX] = useState("calc(50vw - 100px)");
+  const [modalY, setModalY] = useState("calc(50vh - 150px)");
+  const [elements, setElements] = useState(initialElements);
+  const [idade, setIdade] = useState(0);
 
   const onElementsRemove = (elementsToRemove) =>
     setElements((els) => removeElements(elementsToRemove, els))
@@ -98,35 +107,31 @@ const FlowPage = () => {
     restoreFlow()
   }, [])
 
-  const handleRegister = useCallback(
-    async (e) => {
-      e.preventDefault()
-      const node = await localforage.getItem('lastNode')
-      const countX = node ? node.position.x : 0
-      const countY = node ? node.position.y : 0
-      const uniqueId = getNodeId()
+    var tipo;
+    if (idade > 18 && idade < 20) tipo = 'food';
+    else if (idade > 20 && idade < 30) tipo = 'clothing';
+    else if (idade > 40 && idade < 50) tipo = 'money';
+    else if (idade > 60) tipo = 'pray';
+    else tipo = 'default';
 
-      const newNode = {
-        id: uniqueId,
-        data: {
-          label: name,
-          payment: value,
-          since: new Date(),
-          discount: 0,
-        },
-        position: {
-          x: countX,
-          y: countY + 100,
-        },
-      }
-
-      setName('')
-      setValue('')
-      localforage.setItem('lastNode', newNode)
-      setElements((els) => els.concat(newNode))
-    },
-    [setElements, name, value]
-  )
+    const newNode = {
+      id: uniqueId,
+      data: { 
+        label: name,
+        payment: value,
+        since: new Date(),
+        discount: 0, 
+      },
+      position: {
+        x: countX,
+        y: countY + 100,
+      },
+      type: tipo,
+    };
+    setName(''); setValue(''); 
+    localforage.setItem("lastNode", newNode);
+    setElements((els) => els.concat(newNode));
+  }, [name, value, idade]);
 
   function selectNode(evt, node) {
     function formatDate(data) {
@@ -162,39 +167,57 @@ const FlowPage = () => {
   }
 
   return (
-    <ReactFlowProvider>
-      <div className='content'>
-        <div className='animate-appear flow'>
-          <ReactFlow
-            elements={elements}
-            onElementsRemove={onElementsRemove}
-            onConnect={onConnect}
-            onLoad={setRfInstance}
-            onElementClick={selectNode}
-            onNodeDragStop={(evt, node) =>
-              localforage.setItem('lastNode', node)
-            }
-          >
-            <Background variant='lines' gap={20} size={3} />
+  <ReactFlowProvider>
+    <div className="content">
+    <div className="animate-appear flow">
+        <ReactFlow
+          elements={elements}
+          nodeTypes={nodeTypes}
+          onElementsRemove={onElementsRemove}
+          onConnect={onConnect}
+          onLoad={setRfInstance}
+          onElementClick = {selectNode}
+          onNodeDragStop = {(evt, node) => localforage.setItem("lastNode", node)}
+        >
+          <Background
+            variant="lines"
+            gap={20}
+            size={3}
+          />
 
-            <MiniMap
-              nodeColor={(node) => {
-                switch (node.type) {
-                  case 'input':
-                    return 'red'
-                  case 'default':
-                    return '#00ff00'
-                  case 'output':
-                    return 'rgb(0,0,255)'
-                  default:
-                    return '#eee'
-                }
-              }}
-              nodeStrokeWidth={2}
-              nodeBorderRadius={8}
-            />
-            <Controls />
-          </ReactFlow>
+          <MiniMap
+            nodeColor={(node) => {
+              switch (node.type) {
+                case 'money':
+                  return 'red';
+                case 'default':
+                  return '#00ff00';
+                case 'clothing':
+                  return 'rgb(0,0,255)';
+                case 'pray':
+                  return 'yellow';
+                case 'food':
+                  return 'orange';
+                default:
+                  return '#eee';
+              }
+            }}
+            nodeStrokeWidth={2}
+            nodeBorderRadius={8}
+          />
+          <Controls />
+        </ReactFlow>
+      </div>
+
+      <div className="animate-left form">
+        <h1>
+          Cadastro
+        </h1>
+        <div className="input-block">
+          <label htmlFor="name">Nome do aluno</label>
+          <input name="name" id="name" value={name} required
+            onChange={e => {setName(e.target.value)}}
+          />
         </div>
 
         <div className='animate-left form'>
@@ -212,17 +235,14 @@ const FlowPage = () => {
             />
           </div>
 
-          <div className='input-block'>
-            <label htmlFor='value'>Mensalidade</label>
-            <input
-              type='number'
-              name='value'
-              value={value}
-              id='value'
-              required
-              onChange={(e) => setValue(e.target.value)}
-            />
-          </div>
+        <div className="input-block">
+          <label htmlFor="idade">Idade</label>
+          <input
+            type="number"
+            value={idade}
+            onChange={e => setIdade(e.target.value)}
+          />
+        </div>
 
           <div className='input-block radio'>
             <label htmlFor='sex'>Sexo</label>
@@ -238,11 +258,15 @@ const FlowPage = () => {
 
           <button onClick={onSave}>Salvar mapa</button>
 
-          <button onClick={onRestore}>Restaurar</button>
-
-          <h3 className='tutorial'>Atenção</h3>
-          <p className='note'>Para apagar nó, use a tecla backspace.</p>
-          <p className='note'>Lembre-se de atualizar o cadastro!</p>
+        <h3 className='tutorial'>Atenção</h3>
+        <p className='note'>Para apagar nó, use a tecla backspace.</p>
+        <p className='note'>Lembre-se de atualizar o cadastro!</p>
+        <hr />
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px', alignItems: 'center' }}>
+          <div style={{ width: '0.8rem', height: '0.8rem', backgroundColor:'blue'}}/> <p>Para maiores de 18 anos</p>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px', alignItems: 'center' }}>
+          <div style={{ width: '0.8rem', height: '0.8rem', backgroundColor:'red'}}/> <p>Para maiores de 60 anos</p>
         </div>
       </div>
       <div
